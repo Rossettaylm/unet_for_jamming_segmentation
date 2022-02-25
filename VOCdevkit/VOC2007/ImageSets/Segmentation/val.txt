@@ -1,0 +1,3 @@
+direct10
+direct5
+loop3

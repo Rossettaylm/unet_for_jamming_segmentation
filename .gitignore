@@ -1,0 +1,11 @@
+__pycache__
+test.drawio
+/datasets/before/*
+/datasets/JPEGImages/*
+/datasets/SegmentationClass/*
+/model_data/*
+!/model_data/README.md
+/unet_files/
+/logs/*
+/VOCdevkit/VOC2007/SegmentationClass/*
+/VOCdevkit/VOC2007/JPEGImages/*
