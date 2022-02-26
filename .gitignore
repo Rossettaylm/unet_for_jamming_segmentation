@@ -5,6 +5,7 @@ test.drawio
 /datasets/SegmentationClass/*
 /model_data/*
 !/model_data/README.md
+/miou_out
 /unet_files/
 /logs/*
 /VOCdevkit/VOC2007/SegmentationClass/*

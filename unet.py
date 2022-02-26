@@ -28,7 +28,7 @@ class Unet(object):
         #-------------------------------------------------------------------#
         # "model_path": 'model_data/unet_voc.pth',
         # "model_path": 'model_data/unet_medical.pth',
-        "model_path": "logs\ep040-loss0.133-val_loss0.053.pth",
+        "model_path": "logs\ep040-loss0.140-val_loss0.052.pth",
         #--------------------------------#
         #   所需要区分的类的个数+1
         #--------------------------------#
