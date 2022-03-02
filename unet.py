@@ -175,16 +175,17 @@ class Unet(object):
 
         return image
 
-    def get_jamming_pos(self, image):
+    @staticmethod
+    def get_jamming_pos(self, image_path):
         #---------------------------------------------------------#
         #   在这里将图像转换成RGB图像，防止灰度图在预测时报错。
         #   代码仅仅支持RGB图像的预测，所有其它类型的图像都会转化成RGB
         #---------------------------------------------------------#
+        image = Image.open(image_path)
         image = cvtColor(image)
         #---------------------------------------------------#
         #   对输入图像进行一个备份，后面用于绘图
         #---------------------------------------------------#
-        old_img = copy.deepcopy(image)
         orininal_h = np.array(image).shape[0]
         orininal_w = np.array(image).shape[1]
         #---------------------------------------------------------#
@@ -226,9 +227,10 @@ class Unet(object):
             #   取出每一个像素点的种类
             #---------------------------------------------------#
             pr = pr.argmax(axis=-1)
-            
+
             # 得到一个代表干扰信号位置的数组，shape = 原来图片的大小
             jamming_pos = (pr == 2).astype(int)
+            jamming_pos = jamming_pos.tolist()
             return jamming_pos
 
 

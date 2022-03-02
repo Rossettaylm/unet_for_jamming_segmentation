@@ -63,16 +63,19 @@ if __name__ == "__main__":
             seg_img[:, :, 2] += ((pr == c)*( self.colors[c][2] )).astype('uint8')
         '''
         # while True:
-        img = "img/direct.jpg"
+        image_path = "img/direct.jpg"
+        # img = "../matlab/direct1.jpg"
         try:
-            image = Image.open(img)
+            image = Image.open(image_path)
         except:
             print('Open Error! Try again!')
             # continue
         else:
             r_image = unet.detect_image(image)
-            jamming_pos = unet.get_jamming_pos(image)
-            print(jamming_pos.shape)
+            jamming_pos = Unet.get_jamming_pos(unet, image_path)
+            print(type(jamming_pos))
+            print(len(jamming_pos))
+            print(len(jamming_pos[0]))
             r_image.show()
 
     elif mode == "video":
