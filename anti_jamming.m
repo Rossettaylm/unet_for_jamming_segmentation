@@ -5,7 +5,4 @@ if count(py.sys.path,'') == 0
     insert(py.sys.path,int32(0),'');
 end
 
-unet = py.unet.Unet();
-pos = py.unet.Unet.get_jamming_pos(unet, "./img/direct.jpg");
-length(pos)
-length(pos{1})
+

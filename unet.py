@@ -228,8 +228,8 @@ class Unet(object):
             #---------------------------------------------------#
             pr = pr.argmax(axis=-1)
 
-            # 得到一个代表干扰信号位置的数组，shape = 原来图片的大小
-            jamming_pos = (pr == 2).astype(int)
+            # 得到一个代表干扰信号位置的数组，并进行取反，使其存在的地方数值为0，shape = 原来图片的大小
+            jamming_pos = (~((pr == 2).astype(bool))).astype(int)
             jamming_pos = jamming_pos.tolist()
             return jamming_pos
 

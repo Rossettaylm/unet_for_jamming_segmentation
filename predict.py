@@ -7,6 +7,7 @@ import time
 import cv2
 import numpy as np
 from PIL import Image
+from scipy.io import savemat
 
 from unet import Unet
 
@@ -73,9 +74,7 @@ if __name__ == "__main__":
         else:
             r_image = unet.detect_image(image)
             jamming_pos = Unet.get_jamming_pos(unet, image_path)
-            print(type(jamming_pos))
-            print(len(jamming_pos))
-            print(len(jamming_pos[0]))
+            savemat('jamming_pos.mat', {'jamming_pos': jamming_pos})
             r_image.show()
 
     elif mode == "video":
