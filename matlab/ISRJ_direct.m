@@ -19,11 +19,13 @@ echo_stft=zeros(data_num,100,247,3);  %矩阵大小（500,200,1000,2）
 num_label = 2;
 label=zeros(1,data_num)+num_label;                         %标签数据,此干扰标签为0
 
-repetion_times=1;   %重复次数
-period=[5e-6];    %采样脉冲周期   其中taup / period = 4，表示采样次数
-duty=[50];  %占空比
 
 for m=1:data_num
+
+    period= 20e-6 / randi([2, 10]);    %采样脉冲周期 
+    duty=50;  %占空比
+    repetion_times = 1; % 一个采样周期内发的次数
+
     %% 目标回波＋噪声
     JNR=20+round(rand(1,1)*20); %干噪比20-40dB
     sp=randn([1,samp_num])+1j*randn([1,samp_num]);%噪声基底
@@ -64,9 +66,9 @@ for m=1:data_num
 %     xlabel('Time/μs','FontSize',15);ylabel('Normalized amplitude','FontSize',15)
 
     % 信号实部、虚部分开存入三维张量中
-    echo(m,1:5000,1)=real(sp); 
-    echo(m,1:5000,2)=imag(sp);
-    echo(m,1:5000,3)=sp_abs; 
+%     echo(m,1:5000,1)=real(sp); 
+%     echo(m,1:5000,2)=imag(sp);
+%     echo(m,1:5000,3)=sp_abs; 
 %     echo(m,1:10000,4)=angle(sp); 
 
     %% STFT变换
@@ -81,8 +83,8 @@ for m=1:data_num
     imagesc(linspace(-10,10,size(S,1)),linspace(-10,10,size(S,2)),abs(S));
     ax.XAxis.Visible = 'off';
     ax.YAxis.Visible = 'off';
-    filename = ['direct', num2str(m), '.jpg'];
-    exportgraphics(h, filename);
+%     filename = ['direct', num2str(m), '.jpg'];
+%     exportgraphics(h, filename);
 
 %     set(gca,'FontName','Times New Roman');
 %     title("ISRJ_direct | STFT")

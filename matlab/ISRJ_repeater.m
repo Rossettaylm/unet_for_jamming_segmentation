@@ -4,7 +4,7 @@
 %%% 间歇采样循环转发干扰
 close all;clear;clc
 j=sqrt(-1);
-data_num=10;   %干扰样本数
+data_num=1;   %干扰样本数
 samp_num=5000;%距离窗点数
 fs = 100e6; %采样频率
 B = 50e6;  %信号带宽
@@ -21,11 +21,12 @@ num_label = 2;
 label=zeros(1,data_num)+num_label;                         %标签数据,此干扰标签为0
 
 %% 转发参数设置
-repetion_times_range=[4,3,2];   %重复次数
-period_range=[5e-6, 6.66e-6, 10e-6];    %采样脉冲周期 taup / period = 4 或 2，表示采样次数
-duty_range=[20,25,33.33];  %占空比
-% duty_range = [10];
-% period_range = [2e-6];
+% repetion_times_range=[4,3,2];   %重复次数
+% period_range=[5e-6, 6.66e-6, 10e-6];    %采样脉冲周期 taup / period = 4 或 2，表示采样次数
+% duty_range=[20,25,33.33];  %占空比
+duty = 100 / randi([3, 6]); % 占空比
+period = 20e-6 / randi([2, 5]);
+repeat_times = 100 / duty - 1;
 
 for m=1:data_num
     %% 目标回波＋噪声
@@ -39,20 +40,15 @@ for m=1:data_num
     sp(1+range_tar:length(lfm)+range_tar)=sp(1+range_tar:length(lfm)+range_tar)+As*lfm;  %噪声+目标回波 目标在距离窗内200点处
     
     %% 采样
-    index1=1+round(rand(1,1));
-    index2=1+round(rand(1,1)*2);
-    period=period_range(index1);
-    duty=duty_range(index2);
-    repetion_times=repetion_times_range(index2);
     taup_samp_num = taup / period;
     squa=(square((1/period)*2*pi*t, duty)+1)/2;   %生成单极性方波，来做采样
 %     squa(400)=0;
     squa1=lfm.*squa;    %采样后的目标回波
 
     %% 转发
-    delay_time=period*duty*0.01;  %延迟一个采样脉冲时间，即采样后立即转发
+    delay_time=period*(duty*0.01);  %延迟一个采样脉冲时间，即采样后立即转发
     delay_num=ceil(delay_time / (1/fs));  %ceil()为进一法取整，表示一个延迟时间内程序采样点数，计算得在20~50之间
-    for i=1:repetion_times %多次重复转发
+    for i=1:repeat_times %多次重复转发
         %干扰回波幅度×采样后波形
         sp(1+range_tar+i*delay_num : length(lfm)+range_tar+i*delay_num)=sp(1+range_tar+i*delay_num : length(lfm)+range_tar+i*delay_num)+Aj*squa1;
     end

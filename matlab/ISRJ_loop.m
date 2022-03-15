@@ -4,7 +4,7 @@
 %% 间歇采样循环转发干扰
 close all;clear;clc
 j=sqrt(-1);
-data_num=10;   %干扰样本数
+data_num=1;   %干扰样本数
 samp_num=5000;%距离窗点数
 fs = 100e6; %采样频率
 B = 50e6;  %信号带宽
@@ -20,8 +20,9 @@ num_label = 2;
 label=zeros(1,data_num)+num_label;                         %标签数据,此干扰标签为0
 
 repetion_times_range=[4,3,2];   %重复转发次数
-period_range=[5e-6];    %采样脉冲周期   taup / period = 4 或 2，表示采样次数
+period_range=[5e-6];    %采样脉冲周期   taup / period = 4，表示采样次数
 duty_range=[20,25,33.33];  %占空比 对应转发次数
+
 
 for m=1:data_num
     %% 目标回波＋噪声
@@ -35,13 +36,22 @@ for m=1:data_num
     sp(1+range_tar:length(lfm)+range_tar)=sp(1+range_tar:length(lfm)+range_tar)+As*lfm;  %噪声+目标回波 目标在距离窗内200点处
     
     %% 采样＋转发
-    period_num = 1/8 * length(t); % 取一个周期点数为50
-    loop_num = 3;
-    loop_list = zeros(1, loop_num*period_num); % 将每次采样后的信号按倒序存入转发列表
+
+    section_num_list = [5, 9, 14, 20];
+    loop_num = randi([2, 5]);
+    section_num = section_num_list(loop_num - 1);
+
+    section = taup / section_num; % 切片的长度
+    section_samp_num = (taup*fs) / (taup / section); % 切片的采样点数
+    section_samp_num = int16(section_samp_num);
+
+    DRFM = zeros(1, loop_num*section_samp_num); % 将每次采样后的信号按倒序存入转发列表
     for i=1:loop_num
-        current_samp = sp(1+range_tar+(i*(i+1)/2 - 1)*period_num : range_tar+(i*(i+1)/2 - 1)*period_num+period_num);
-        loop_list(1+(3-i)*period_num : (3-i+1)*period_num) = current_samp;
-        sp(1+range_tar+(i*(i+1)/2 - 1)*period_num + period_num : range_tar+(i*(i+1)/2 - 1)*period_num+period_num+i*period_num) = Aj * loop_list(1+(3-i)*period_num:3*period_num);
+        a = (i * (i+1) / 2 - 1); % 截获切片开始的坐标0、2、5、9...
+        current_samp = sp(1+range_tar+a*section_samp_num : range_tar+(a+1)*section_samp_num);
+        DRFM(1+(loop_num-i)*section_samp_num : (loop_num-i+1)*section_samp_num) = current_samp;
+%         从采样切片的下一个切片开始转发
+        sp(1+range_tar+(a+1)*section_samp_num : range_tar+(a+1+i)*section_samp_num) =  Aj * DRFM(1+(loop_num-i)*section_samp_num : (loop_num)*section_samp_num) +  sp(1+range_tar+(a+1)*section_samp_num : range_tar+(a+1+i)*section_samp_num);
     end
     
 
@@ -56,9 +66,9 @@ for m=1:data_num
 %     xlabel('Time/μs','FontSize',15);ylabel('Normalized amplitude','FontSize',15)
 
     %信号实部、虚部分开存入三维张量中
-    echo(m,1:5000,1)=real(sp); 
-    echo(m,1:5000,2)=imag(sp);
-    echo(m,1:5000,3)=sp_abs; 
+%     echo(m,1:5000,1)=real(sp); 
+%     echo(m,1:5000,2)=imag(sp);
+%     echo(m,1:5000,3)=sp_abs; 
 %     echo(m,1:2000,4)=angle(sp); 
 
     %% STFT变换
@@ -72,8 +82,10 @@ for m=1:data_num
     ax = axes('Parent', h);
     imagesc(linspace(-10,10,size(S,1)),linspace(-10,10,size(S,2)),abs(S));
     ax.XAxis.Visible = 'off'; ax.YAxis.Visible = 'off';
-    filename = ['loop', num2str(m), '.jpg'];
-    exportgraphics(h, filename);
+%     filename = ['loop', num2str(m), '.jpg'];
+%     exportgraphics(h, filename);
+
+
 %     set(gca,'FontName','Times New Roman');
 %     title("ISRJ_loop | STFT")
 %     xlabel('Time/μs','FontSize',15);ylabel('Frequency/MHz','FontSize',15)
@@ -81,9 +93,9 @@ for m=1:data_num
 
 
     %% 保存实部、虚部、模值
-    echo_stft(m,1:size(S,1),1:size(S,2),1)=real(S);
-    echo_stft(m,1:size(S,1),1:size(S,2),2)=imag(S);
-    echo_stft(m,1:size(S,1),1:size(S,2),3)=S_abs;
+%     echo_stft(m,1:size(S,1),1:size(S,2),1)=real(S);
+%     echo_stft(m,1:size(S,1),1:size(S,2),2)=imag(S);
+%     echo_stft(m,1:size(S,1),1:size(S,2),3)=S_abs;
 %     echo_stft(m,1:size(S,1),1:size(S,2),4)=angle(S);
  
     
