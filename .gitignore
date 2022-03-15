@@ -1,5 +1,5 @@
 __pycache__
-test.drawio
+flowChart.drawio
 /datasets/before/*
 /datasets/JPEGImages/*
 /datasets/SegmentationClass/*
@@ -10,3 +10,5 @@ test.drawio
 /logs/*
 /VOCdevkit/VOC2007/SegmentationClass/*
 /VOCdevkit/VOC2007/JPEGImages/*
+jamming_pos.mat
+/img/*
