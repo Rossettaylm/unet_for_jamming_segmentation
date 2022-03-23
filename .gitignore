@@ -8,7 +8,10 @@ flowChart.drawio
 /miou_out
 /unet_files/
 /logs/*
+!/logs/ep040-loss0.128-val_loss0.081.pth
 /VOCdevkit/VOC2007/SegmentationClass/*
 /VOCdevkit/VOC2007/JPEGImages/*
 jamming_pos.mat
 /img/*
+*.jpg
+/matlab

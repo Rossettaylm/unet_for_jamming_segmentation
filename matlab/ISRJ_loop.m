@@ -9,7 +9,7 @@ samp_num=5000;%距离窗点数
 fs = 100e6; %采样频率
 B = 50e6;  %信号带宽
 taup = 20e-6; %信号脉宽
-t = linspace(taup/2,taup/2*3,taup*fs);          %时间序列
+t = linspace(-taup/2,taup/2,taup*fs);          %时间序列
 k = B / taup;
 lfm = exp(1j*pi*k*t.^2);          %LFM信号 复包络
 
@@ -18,10 +18,6 @@ echo=zeros(data_num,samp_num,3);     %矩阵大小（500,2000,2）
 echo_stft=zeros(data_num,100,247,3);  %矩阵大小（500,200,1000,2）
 num_label = 2;
 label=zeros(1,data_num)+num_label;                         %标签数据,此干扰标签为0
-
-repetion_times_range=[4,3,2];   %重复转发次数
-period_range=[5e-6];    %采样脉冲周期   taup / period = 4，表示采样次数
-duty_range=[20,25,33.33];  %占空比 对应转发次数
 
 
 for m=1:data_num
@@ -38,7 +34,7 @@ for m=1:data_num
     %% 采样＋转发
 
     section_num_list = [5, 9, 14, 20];
-    loop_num = randi([2, 5]);
+    loop_num = randi([2, 5]); % 循环转发次数
     section_num = section_num_list(loop_num - 1);
 
     section = taup / section_num; % 切片的长度
@@ -72,7 +68,8 @@ for m=1:data_num
 %     echo(m,1:2000,4)=angle(sp); 
 
     %% STFT变换
-    [S,~,~,~]=spectrogram(sp,32,32-8,512,fs);
+    S = stft(sp, fs);
+%     [S,~,~,~]=spectrogram(sp,32,32-8,512,fs);
     S = imresize(S,[539,682],'nearest');
     S=S/max(max(S));
     S_abs=abs(S);

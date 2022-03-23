@@ -28,7 +28,8 @@ class Unet(object):
         #-------------------------------------------------------------------#
         # "model_path": 'model_data/unet_voc.pth',
         # "model_path": 'model_data/unet_medical.pth',
-        "model_path": "logs\ep040-loss0.140-val_loss0.052.pth",
+        "model_path": "logs\ep040-loss0.128-val_loss0.081.pth",
+        # "model_path": "logs\ep040-loss0.140-val_loss0.052.pth",
         #--------------------------------#
         #   所需要区分的类的个数+1
         #--------------------------------#
@@ -47,7 +48,7 @@ class Unet(object):
         #   是否使用Cuda
         #   没有GPU可以设置成False
         #-------------------------------#
-        "cuda": False,
+        "cuda": True,
     }
 
     #---------------------------------------------------#

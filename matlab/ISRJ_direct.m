@@ -4,25 +4,21 @@
 %% 间歇采样直接转发干扰
 close all;clear;clc
 j=sqrt(-1);
-data_num=10;   %干扰样本数
+data_num=1;   %干扰样本数
 samp_num=5000;%距离窗点数
 fs = 100e6; %采样频率
 B = 50e6;  %信号带宽
 taup = 20e-6; %信号脉宽
-t = linspace(taup/2,taup/2*3,taup*fs);          %时间序列
+t = linspace(-taup/2,taup/2,taup*fs);          %时间序列
 k = B / taup;
 lfm = exp(1j*pi*k*t.^2);          %LFM信号 复包络
 
 SNR=10; %信噪比dB
-echo=zeros(data_num,samp_num,3);     %矩阵大小（500,2000,2）
-echo_stft=zeros(data_num,100,247,3);  %矩阵大小（500,200,1000,2）
-num_label = 2;
-label=zeros(1,data_num)+num_label;                         %标签数据,此干扰标签为0
 
 
 for m=1:data_num
 
-    period= 20e-6 / randi([2, 10]);    %采样脉冲周期 
+    period= 20e-6 / randi([2, 7]);    %采样脉冲周期 
     duty=50;  %占空比
     repetion_times = 1; % 一个采样周期内发的次数
 
@@ -65,6 +61,13 @@ for m=1:data_num
 %     title("ISRJ_direct")
 %     xlabel('Time/μs','FontSize',15);ylabel('Normalized amplitude','FontSize',15)
 
+    figure(2);
+    freq=linspace(-fs/2,fs/2,taup*fs);
+    plot(freq*1e-6,fftshift(abs(fft(lfm))));
+    xlabel('Frequency in MHz');
+    title(' 线性调频信号的幅频特性');
+    grid on;axis tight;
+
     % 信号实部、虚部分开存入三维张量中
 %     echo(m,1:5000,1)=real(sp); 
 %     echo(m,1:5000,2)=imag(sp);
@@ -72,7 +75,8 @@ for m=1:data_num
 %     echo(m,1:10000,4)=angle(sp); 
 
     %% STFT变换
-    [S,~,~,~]=spectrogram(sp,32,32-8,512,fs);
+    S = stft(sp, fs);
+%     [S,~,~,~]=spectrogram(sp,32,32-8,512,fs);
     S = imresize(S,[539,682],'nearest');
     S=S/max(max(S));
     S_abs=abs(S);
