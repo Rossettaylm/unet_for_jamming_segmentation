@@ -13,4 +13,5 @@ flowChart.drawio
 /VOCdevkit/VOC2007/JPEGImages/*
 jamming_pos.mat
 *.jpg
+!/img/*.jpg
 /matlab
