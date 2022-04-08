@@ -48,7 +48,7 @@ class Unet(object):
         #   是否使用Cuda
         #   没有GPU可以设置成False
         #-------------------------------#
-        "cuda": True,
+        "cuda": False,
     }
 
     #---------------------------------------------------#
@@ -233,8 +233,6 @@ class Unet(object):
             jamming_pos = (~((pr == 2).astype(bool))).astype(int)
             jamming_pos = jamming_pos.tolist()
             return jamming_pos
-
-
 
     def get_FPS(self, image, test_interval):
         #---------------------------------------------------------#
