@@ -15,10 +15,9 @@ if __name__ == "__main__":
     #-------------------------------------------------------------------------#
     unet = Unet()
 
-    image_paths = os.listdir("./img")
-    for image_path in image_paths:
-        path = os.path.join("./img", image_path)
-        image = Image.open(path)
+    images = os.listdir("./img")
+    for image in images:
+        image_path = os.path.join("./img", image)
+        image = Image.open(image_path)
         r_image = unet.detect_image(image)
-        # jamming_pos = Unet.get_jamming_pos(unet, image_path)
         r_image.show()

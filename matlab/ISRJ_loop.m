@@ -33,8 +33,8 @@ for m=1:data_num
 
  %% 采样参数设置
 
-    section_num_list = [5, 9, 14, 20];
-    loop_num = randi([2, 5]); % 循环转发次数
+    section_num_list = [5, 9, 14];
+    loop_num = randi([2, 4]); % 循环转发次数
     section_num = section_num_list(loop_num - 1);
 
     section = taup / section_num; % 切片的长度
@@ -64,7 +64,7 @@ for m=1:data_num
     xlabel('Time/μs');
 
     %% 回波信号的幅频特性
-    subplot(2, 2, 2);
+    subplot(2, 2, 3);
     freq=linspace(-fs,fs,length(sp));
     plot(freq*1e-6,fftshift(abs(fft(sp))));
     xlabel('Frequency in MHz');
@@ -90,7 +90,7 @@ for m=1:data_num
 %     sp_pc = temp;
 
     %% 对sp_pc的时域以及频域进行作图
-    subplot(2, 2, 3);
+    subplot(2, 2, 2);
     plot(linspace(0, 3, 6000)*taup, real(sp_pc));
     title("脉冲压缩后的时域信号")
     xlabel('Time/μs');
