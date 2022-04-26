@@ -27,9 +27,9 @@ class Unet(object):
         #   验证集损失较低不代表miou较高，仅代表该权值在验证集上泛化性能较好。
         #-------------------------------------------------------------------#
         # "model_path": 'model_data/unet_voc.pth',
-        # "model_path": 'model_data/unet_medical.pth',
         "model_path": "logs\ep040-loss0.128-val_loss0.081.pth",
-        # "model_path": "logs\ep040-loss0.140-val_loss0.052.pth",
+        # "model_path": "logs\ep040-loss0.133-val_loss0.053.pth",
+
         #--------------------------------#
         #   所需要区分的类的个数+1
         #--------------------------------#
