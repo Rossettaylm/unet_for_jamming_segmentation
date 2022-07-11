@@ -15,15 +15,24 @@ from utils.utils import cvtColor, preprocess_input, resize_image
 
 class Unet(object):
     _defaults = {
-        # 预测权值文件
-        "model_path": "logs\ep040-loss0.128-val_loss0.081.pth",  # 脉内编码
-        # "model_path": "logs\ep040-loss0.133-val_loss0.053.pth", # LFM
-
-        # target + jamming + background
+        #-------------------------------------------------------------------#
+        #   model_path指向logs文件夹下的权值文件
+        #   训练好后logs文件夹下存在多个权值文件，选择验证集损失较低的即可。
+        #   验证集损失较低不代表miou较高，仅代表该权值在验证集上泛化性能较好。
+        #-------------------------------------------------------------------#
+        # "model_path": 'model_data/unet_voc.pth',
+        # "model_path": "logs\ep040-loss0.128-val_loss0.081.pth", # LFM训练模型
+        "model_path": "logs\ep040-loss0.138-val_loss0.079.pth", # 脉内编码训练模型
+        #--------------------------------#
+        # "num_classes": 21,
         "num_classes": 3,
         "input_shape": [512, 512],
         "blend": True,
-        "cuda": False
+        #-------------------------------#
+        #   是否使用Cuda
+        #   没有GPU可以设置成False
+        #-------------------------------#
+        "cuda": True,
     }
 
     # 初始化UNET
