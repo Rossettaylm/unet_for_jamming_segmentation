@@ -37,7 +37,6 @@ class Unet(nn.Module):
         # 512,512,64
         self.up_concat1 = unetUp(in_filters[0], out_filters[0])
 
-        # final conv (without any concat)
         self.final = nn.Conv2d(out_filters[0], num_classes, 1)
 
     def forward(self, inputs):

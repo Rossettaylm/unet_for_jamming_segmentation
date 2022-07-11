@@ -1,6 +1,4 @@
-#----------------------------------------------------#
 # 进行预测
-#----------------------------------------------------#
 
 import os
 
@@ -10,11 +8,7 @@ from scipy.io import savemat
 from unet import Unet
 
 if __name__ == "__main__":
-    #-------------------------------------------------------------------------#
-    #  对应种类的颜色，到__init__函数里修改self.colors即可
-    #-------------------------------------------------------------------------#
     unet = Unet()
-
     image_paths = os.listdir("./img")
     for image_path in image_paths:
         path = os.path.join("./img", image_path)

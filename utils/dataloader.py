@@ -25,24 +25,17 @@ class UnetDataset(Dataset):
         annotation_line = self.annotation_lines[index]
         name            = annotation_line.split()[0]
 
-        #-------------------------------#
-        #   从文件中读取图像
-        #-------------------------------#
         jpg         = Image.open(os.path.join(os.path.join(self.dataset_path, "VOC2007/JPEGImages"), name + ".jpg"))
         png         = Image.open(os.path.join(os.path.join(self.dataset_path, "VOC2007/SegmentationClass"), name + ".png"))
-        #-------------------------------#
-        #   数据增强
-        #-------------------------------#
+
+        # 数据增强
         jpg, png    = self.get_random_data(jpg, png, self.input_shape, random = self.train)
 
         jpg         = np.transpose(preprocess_input(np.array(jpg, np.float64)), [2,0,1])
         png         = np.array(png)
         png[png >= self.num_classes] = self.num_classes
-        #-------------------------------------------------------#
-        #   转化成one_hot的形式
-        #   在这里需要+1是因为voc数据集有些标签具有白边部分
-        #   我们需要将白边部分进行忽略，+1的目的是方便忽略。
-        #-------------------------------------------------------#
+
+        # 转化成one_hot的形式
         seg_labels  = np.eye(self.num_classes + 1)[png.reshape([-1])]
         seg_labels  = seg_labels.reshape((int(self.input_shape[0]), int(self.input_shape[1]), self.num_classes + 1))
 
@@ -86,12 +79,12 @@ class UnetDataset(Dataset):
 
         image = image.resize((nw,nh), Image.BICUBIC)
         label = label.resize((nw,nh), Image.NEAREST)
-        
+
         flip = self.rand()<.5
-        if flip: 
+        if flip:
             image = image.transpose(Image.FLIP_LEFT_RIGHT)
             label = label.transpose(Image.FLIP_LEFT_RIGHT)
-        
+
         # place image
         dx = int(self.rand(0, w-nw))
         dy = int(self.rand(0, h-nh))
