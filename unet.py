@@ -22,7 +22,8 @@ class Unet(object):
         #-------------------------------------------------------------------#
         # "model_path": 'model_data/unet_voc.pth',
         # "model_path": "logs\ep040-loss0.128-val_loss0.081.pth", # LFM训练模型
-        "model_path": "logs\ep040-loss0.138-val_loss0.079.pth", # 脉内编码训练模型
+        # "model_path": "logs\ep040-loss0.138-val_loss0.079.pth", # 脉内编码训练模型
+        "model_path": "logs\ep039-loss0.143-val_loss0.079.pth",
         #--------------------------------#
         # "num_classes": 21,
         "num_classes": 3,
@@ -32,7 +33,7 @@ class Unet(object):
         #   是否使用Cuda
         #   没有GPU可以设置成False
         #-------------------------------#
-        "cuda": False,
+        "cuda": True,
     }
 
     # 初始化UNET

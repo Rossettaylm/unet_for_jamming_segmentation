@@ -40,7 +40,7 @@ def get_activation(name):
 
 
 def main():
-    img_path = "img/repeater1.jpg"
+    img_path = "img/repeater.jpg"
     image = Image.open(img_path)
     # showImage(image)
     imageTensor = preprocessing(image)
